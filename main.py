@@ -1,0 +1,79 @@
+import solver
+import input_funct
+from pyfiglet import Figlet
+import time, sys, copy
+
+storeSudoku = {}
+
+fig = Figlet(font="banner3-d")
+title = fig.renderText("SUDOKU SOLVER")
+
+print("="*66, "\n")
+for ch in title:
+    sys.stdout.write(ch)
+    sys.stdout.flush()
+    time.sleep(0.001)
+print("\n" + "="*66 + "\n")
+
+def solve_and_store(name):
+    matrix, original = input_funct.inputSudoku()
+    orig_copy = copy.deepcopy(matrix)
+    if not solver.solveSudoku(matrix):
+        print("Unsolvable puzzle.\n")
+        return
+    print()
+    solver.printSudokuGrid(matrix, highlight=original)
+    while True:
+        print("\n1. Store Sudoku")
+        print("2. Return")
+        c = input("Enter choice: ").strip()
+        print()
+        if c == "1":
+            storeSudoku[name].append((orig_copy, copy.deepcopy(matrix)))
+            print("Stored.\n")
+            break
+        if c == "2":
+            break
+        print("Invalid choice.")
+
+while True:
+    print("Hello user, welcome to Sudoku Solver ...")
+    print("1. Login")
+    print("2. Solve without login")
+    print("3. Exit\n")
+    ch = input("Enter your choice: ").strip()
+    print()
+    if ch == "3":
+        print("Exiting...")
+        break
+    if ch == "2":
+        matrix, original = input_funct.inputSudoku()
+        if solver.solveSudoku(matrix):
+            solver.printSudokuGrid(matrix, highlight=original)
+        else:
+            print("Unsolvable puzzle.\n")
+        print()
+        continue
+    if ch == "1":
+        name = input("Enter name: ").lower().strip()
+        print()
+        if name not in storeSudoku:
+            storeSudoku[name] = []
+        while True:
+            print(f"Hello {name.capitalize()},")
+            print("1. Solve Sudoku")
+            print("2. View Saved Sudokus")
+            print("3. Back to main menu")
+            c2 = input("Enter your choice: ").strip()
+            if c2 == "1":
+                solve_and_store(name)
+            elif c2 == "2":
+                solver.viewSavedSudokus(name, storeSudoku)
+            elif c2 == "3":
+                break
+            else:
+                print("Invalid input.\n")
+    else:
+        print("Invalid choice.\n")
+        
+input("\nPress Enter to exit...")
