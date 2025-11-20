@@ -76,4 +76,4 @@ while True:
     else:
         print("Invalid choice.\n")
         
-input("\nPress Enter to exit...")
+
