@@ -4,7 +4,7 @@ from pyfiglet import Figlet
 import time, sys, copy
 
 storeSudoku = {}
-
+# Prints the "SUDOKU SOLVER" font.
 fig = Figlet(font="banner3-d")
 title = fig.renderText("SUDOKU SOLVER")
 
@@ -16,12 +16,19 @@ for ch in title:
 print("\n" + "="*66 + "\n")
 
 def solve_and_store(name):
+    
+    #Catches the return value from the inputSudoku() function present in the file input_funct
+    
     matrix, original = input_funct.inputSudoku()
+    
     orig_copy = copy.deepcopy(matrix)
+    # solveSudoku func in solver file returns boolean value of whether the sudoku is solveable.
     if not solver.solveSudoku(matrix):
         print("Unsolvable puzzle.\n")
         return
+    
     print()
+    #Calls the func printSudokuGrid
     solver.printSudokuGrid(matrix, highlight=original)
     while True:
         print("\n1. Store Sudoku")
@@ -29,6 +36,7 @@ def solve_and_store(name):
         c = input("Enter choice: ").strip()
         print()
         if c == "1":
+            #We store the orinal as well as the solved sudoku in a  dictioanry of lists. 
             storeSudoku[name].append((orig_copy, copy.deepcopy(matrix)))
             print("Stored.\n")
             break
@@ -58,6 +66,7 @@ while True:
         name = input("Enter name: ").lower().strip()
         print()
         if name not in storeSudoku:
+            #Created a new key in the dictionary of lists; lists are now empty.
             storeSudoku[name] = []
         while True:
             print(f"Hello {name.capitalize()},")
@@ -68,7 +77,7 @@ while True:
             if c2 == "1":
                 solve_and_store(name)
             elif c2 == "2":
-                solver.viewSavedSudokus(name, storeSudoku)
+                solver.view_saved_sudokus(name, storeSudoku)
             elif c2 == "3":
                 break
             else:
