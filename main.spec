@@ -1,11 +1,15 @@
 # -*- mode: python ; coding: utf-8 -*-
+from PyInstaller.utils.hooks import collect_data_files
+
+datas = []
+datas += collect_data_files('pyfiglet')
 
 
 a = Analysis(
     ['main.py'],
     pathex=[],
     binaries=[],
-    datas=[('C:\\Users\\anami\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\pyfiglet\\fonts', 'pyfiglet/fonts')],
+    datas=datas,
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
