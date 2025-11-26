@@ -3,7 +3,7 @@ import input_funct
 from pyfiglet import Figlet
 import time, sys, copy
 
-storeSudoku = {}
+store_sudoku = {}
 # Prints the "SUDOKU SOLVER" font.
 fig = Figlet(font="banner3-d")
 title = fig.renderText("SUDOKU SOLVER")
@@ -19,17 +19,17 @@ def solve_and_store(name):
     
     #Catches the return value from the inputSudoku() function present in the file input_funct
     
-    matrix, original = input_funct.inputSudoku()
+    mtx, original = input_funct.inputSudoku()
     
-    orig_copy = copy.deepcopy(matrix)
+    orig_copy = copy.deepcopy(mtx)
     # solveSudoku func in solver file returns boolean value of whether the sudoku is solveable.
-    if not solver.solveSudoku(matrix):
+    if not solver.solveSudoku(mtx):
         print("Unsolvable puzzle.\n")
         return
     
     print()
     #Calls the func printSudokuGrid
-    solver.printSudokuGrid(matrix, highlight=original)
+    solver.printSudokuGrid(mtx, highlight=original)
     while True:
         print("\n1. Store Sudoku")
         print("2. Return")
@@ -37,7 +37,7 @@ def solve_and_store(name):
         print()
         if c == "1":
             #We store the orinal as well as the solved sudoku in a  dictioanry of lists. 
-            storeSudoku[name].append((orig_copy, copy.deepcopy(matrix)))
+            store_sudoku[name].append((orig_copy, copy.deepcopy(mtx)))
             print("Stored.\n")
             break
         if c == "2":
@@ -55,9 +55,9 @@ while True:
         print("Exiting...")
         break
     if ch == "2":
-        matrix, original = input_funct.inputSudoku()
-        if solver.solveSudoku(matrix):
-            solver.printSudokuGrid(matrix, highlight=original)
+        mtx, original = input_funct.inputSudoku()
+        if solver.solveSudoku(mtx):
+            solver.printSudokuGrid(mtx, highlight=original)
         else:
             print("Unsolvable puzzle.\n")
         print()
@@ -65,9 +65,9 @@ while True:
     if ch == "1":
         name = input("Enter name: ").lower().strip()
         print()
-        if name not in storeSudoku:
+        if name not in store_sudoku:
             #Created a new key in the dictionary of lists; lists are now empty.
-            storeSudoku[name] = []
+            store_sudoku[name] = []
         while True:
             print(f"Hello {name.capitalize()},")
             print("1. Solve Sudoku")
@@ -77,7 +77,7 @@ while True:
             if c2 == "1":
                 solve_and_store(name)
             elif c2 == "2":
-                solver.view_saved_sudokus(name, storeSudoku)
+                solver.view_saved_sudokus(name, store_sudoku)
             elif c2 == "3":
                 break
             else:

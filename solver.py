@@ -1,7 +1,7 @@
 from colorama import Fore, Style
 
 #Checks if n is present in the row, column and 3x3 grid.
-def checkValid(mtx, row, col, n):
+def check_valid(mtx, row, col, n):
     for x in range(9):
         if mtx[row][x] == n:
             return False
@@ -18,7 +18,7 @@ def checkValid(mtx, row, col, n):
 
 
 #Recursive function
-def solveSudokuRec(mtx, row, col):
+def sudo_rec(mtx, row, col):
     # BASE CASE: The 2nd last entry of the Sudoku
     if row == 8 and col == 9:
         return True
@@ -28,48 +28,48 @@ def solveSudokuRec(mtx, row, col):
         col = 0
         #If Cell already filled just skip it.
     if mtx[row][col] != 0:
-        return solveSudokuRec(mtx, row, col + 1)
+        return sudo_rec(mtx, row, col + 1)
     
     for n in range(1, 10):
         
-        if checkValid(mtx, row, col, n):
+        if check_valid(mtx, row, col, n):
             mtx[row][col] = n
             
             #recursive step
-            if solveSudokuRec(mtx, row, col + 1):
+            if sudo_rec(mtx, row, col + 1):
                 return True
             mtx[row][col] = 0
     return False
 
 #Checks if the input matrix is valid.
-def isInitialValid(mtx):
+def initial_valid(mtx):
     for row in range(9):
         for col in range(9):
             n = mtx[row][col]
             if n != 0:
                 
                 mtx[row][col] = 0
-                if not checkValid(mtx, row, col, n):
+                if not check_valid(mtx, row, col, n):
                     mtx[row][col] = n 
                     return False, (row, col, n)
                 mtx[row][col] = n
     return True, None
 
-def solveSudoku(mtx):
-    valid, bad_cell = isInitialValid(mtx)
+def solve_sudoku(mtx):
+    valid, bad_cell = initial_valid(mtx)
     if not valid:
         r, c, n = bad_cell
         print(f"{Fore.RED}Invalid Sudoku: duplicate {n} found at row {r+1}, col {c+1}.{Style.RESET_ALL}")
         return False
 
-    if not solveSudokuRec(mtx, 0, 0):
+    if not sudo_rec(mtx, 0, 0):
         print(f"{Fore.RED}No solution exists for this Sudoku.{Style.RESET_ALL}")
         return False
     
     return True
 
 #Prints the solved sudoku immediately after entry of user
-def printSudokuGrid(mtx, highlight=None):
+def print_sudoku_grid(mtx, highlight=None):
     print("+-------+-------+-------+")
     for i in range(9):
         print("|", end=" ")
